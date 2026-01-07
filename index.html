@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" style="scroll-behavior: smooth;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyCast AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #0f172a;
+            color: white;
+            overflow-x: hidden;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .weather-gradient {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        }
+        
+        /* General Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+            opacity: 0;
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+
+        /* Weather Icon Dynamics */
+        @keyframes sun-spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-sun-spin {
+            animation: sun-spin 12s linear infinite;
+            transform-origin: center;
+        }
+
+        @keyframes sun-pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.15); opacity: 0.7; }
+        }
+        .animate-sun-pulse {
+            animation: sun-pulse 3s ease-in-out infinite;
+            transform-origin: center;
+        }
+
+        /* Atmospheric Cloud Formations */
+        @keyframes cumulus-swell {
+            0%, 100% { transform: scale(1) translateY(0); }
+            50% { transform: scale(1.08, 1.04) translateY(-2px); }
+        }
+        .animate-cumulus-swell { animation: cumulus-swell 8s ease-in-out infinite; }
+
+        @keyframes cirrus-drift {
+            0% { transform: translateX(-15px) scaleX(1.5) skewX(-20deg); opacity: 0.1; }
+            50% { opacity: 0.3; }
+            100% { transform: translateX(15px) scaleX(1.2) skewX(-20deg); opacity: 0.1; }
+        }
+        .animate-cirrus-drift { animation: cirrus-drift 15s linear infinite; }
+
+        @keyframes edge-shimmer {
+            0%, 100% { filter: brightness(1) drop-shadow(0 0 2px rgba(255,255,255,0.1)); }
+            50% { filter: brightness(1.3) drop-shadow(0 0 8px rgba(255,255,255,0.3)); }
+        }
+        .animate-edge-shimmer { animation: edge-shimmer 4s ease-in-out infinite; }
+
+        @keyframes cloud-morph {
+            0%, 100% { transform: scale(1) translate(0, 0) rotate(0); }
+            33% { transform: scale(1.03, 0.97) translate(0.5px, -0.5px) rotate(0.5deg); }
+            66% { transform: scale(0.97, 1.03) translate(-0.5px, 0.5px) rotate(-0.5deg); }
+        }
+        .animate-cloud-morph { animation: cloud-morph 7s ease-in-out infinite; }
+
+        @keyframes cloud-drift-slow {
+            0%, 100% { transform: translateX(-4px) translateY(0); opacity: 0.2; }
+            50% { transform: translateX(4px) translateY(-1px); opacity: 0.5; }
+        }
+        .animate-cloud-drift-slow { animation: cloud-drift-slow 12s ease-in-out infinite; }
+
+        @keyframes cloud-drift-fast {
+            0%, 100% { transform: translateX(2px) translateY(1px); opacity: 0.4; }
+            50% { transform: translateX(-2px) translateY(0); opacity: 0.7; }
+        }
+        .animate-cloud-drift-fast { animation: cloud-drift-fast 8s ease-in-out infinite; }
+
+        @keyframes pulse-slow {
+            0%, 100% { transform: scale(0.9); opacity: 0.03; }
+            50% { transform: scale(1.1); opacity: 0.1; }
+        }
+        .animate-pulse-slow { animation: pulse-slow 15s ease-in-out infinite; }
+
+        @keyframes rain-drop {
+            0% { transform: translateY(-5px); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(10px); opacity: 0; }
+        }
+        .animate-rain-drop {
+            animation: rain-drop 1.5s ease-in-out infinite;
+        }
+
+        @keyframes drop-subtle {
+            0% { transform: translateY(-3px); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(6px); opacity: 0; }
+        }
+        .animate-drop-subtle {
+            animation: drop-subtle 2s ease-in-out infinite;
+        }
+
+        @keyframes ripple {
+            0% { transform: scaleX(0.2); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: scaleX(1.5); opacity: 0; }
+        }
+        .animate-ripple {
+            animation: ripple 2s ease-out infinite;
+        }
+
+        @keyframes drizzle-shimmer {
+            0%, 100% { transform: translateY(0) scale(0.8); opacity: 0; }
+            20% { opacity: 0.6; }
+            80% { opacity: 0.3; }
+            100% { transform: translateY(8px) scale(1); opacity: 0; }
+        }
+        .animate-drizzle-shimmer {
+            animation: drizzle-shimmer 2s ease-in-out infinite;
+        }
+
+        @keyframes mist-soft-pulse {
+            0%, 100% { transform: scale(0.95) translateX(-1px); opacity: 0.15; filter: blur(2px); }
+            50% { transform: scale(1.05) translateX(1px); opacity: 0.3; filter: blur(4px); }
+        }
+        .animate-mist-pulse {
+            animation: mist-soft-pulse 6s ease-in-out infinite;
+        }
+
+        /* Compass Dynamics */
+        @keyframes compass-needle-float {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(1.5deg); }
+            75% { transform: rotate(-1.5deg); }
+        }
+        .animate-needle-float {
+            animation: compass-needle-float 4s ease-in-out infinite;
+        }
+
+        /* Enhanced Snow Animations */
+        @keyframes snow-fall-refined {
+            0% { transform: translateY(-15%) translateX(0) rotate(0); opacity: 0; }
+            15% { opacity: 1; }
+            85% { opacity: 1; }
+            100% { transform: translateY(115%) translateX(var(--drift, 6px)) rotate(var(--rot, 180deg)); opacity: 0; }
+        }
+        
+        @keyframes snow-sway {
+            0%, 100% { transform: translateX(-2px); }
+            50% { transform: translateX(2px); }
+        }
+
+        .animate-snow-l1 { 
+            --drift: 8px; --rot: 360deg; 
+            animation: snow-fall-refined 3s linear infinite; 
+        }
+        .animate-snow-l2 { 
+            --drift: -4px; --rot: -180deg; 
+            animation: snow-fall-refined 5s linear infinite; 
+        }
+        .animate-snow-l3 { 
+            --drift: 2px; --rot: 90deg; 
+            animation: snow-fall-refined 7s linear infinite; 
+        }
+        .animate-sway-slow { animation: snow-sway 4s ease-in-out infinite; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "recharts": "https://esm.sh/recharts@^3.6.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+    <div id="root"></div>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>
